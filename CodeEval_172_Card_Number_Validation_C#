@@ -1,0 +1,63 @@
+///
+Challenege description:
+https://www.codeeval.com/open_challenges/172/
+///
+
+using System;
+using System.IO;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        using (StreamReader reader = File.OpenText(args[0]))
+        //using (StreamReader reader = File.OpenText("TextFile1.txt"))
+
+        while (!reader.EndOfStream)
+            {
+                string values = reader.ReadLine().Replace(" ", String.Empty);
+                char[] numbers = values.ToCharArray();
+                int sum = 0;
+                bool shouldWeDoubleIt = false;
+
+                for (int i = numbers.Length - 1; i > -1; i--)
+                {
+                    if (!shouldWeDoubleIt)
+                    {
+                        sum += (int)Char.GetNumericValue(numbers[i]);
+                        shouldWeDoubleIt = true;
+                    }
+
+                    else
+                    {
+                        if ((int)Char.GetNumericValue(numbers[i]) * 2 > 9)
+                        {
+                            string value = ((int)Char.GetNumericValue(numbers[i]) * 2).ToString();
+                            int tempSum = 0;
+                            foreach (var item in value)
+                            {
+                                tempSum += (int)Char.GetNumericValue(item);
+                            }
+                            sum += tempSum;
+                            shouldWeDoubleIt = false;
+                        }
+
+                        else
+                        {
+                            sum += (int)Char.GetNumericValue(numbers[i]) * 2;
+                            shouldWeDoubleIt = false;
+                        }
+                    }
+                }
+
+                if (sum % 10 == 0)
+                {
+                    Console.WriteLine("1");
+                }
+                else
+                {
+                    Console.WriteLine("0");
+                }
+            }
+    }
+}
